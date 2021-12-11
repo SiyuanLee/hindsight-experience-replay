@@ -58,14 +58,14 @@ mpirun -np 16 python -u train.py --env-name='HandManipulateBlockRotateXYZ-v0' --
 
 mpirun -np 16 python -u train.py --env-name='HandManipulateBlockRotateXYZEp80Sim25-v0' --n-epochs=200 
 
-mpirun -np 8 python -u train.py --env-name='HandBlockFixedPosRotateXYZ-v0' --n-epochs=500 
+mpirun -np 16 python -u train.py --env-name='HandBlockFixedPosRotateXYZ25-v0' --n-epochs=500 
 
 # target is qpos, flat
 mpirun -np 8 python -u train.py --env-name='HandManipulateBlockPos-v0' --n-epochs=200 
 
 mpirun -np 8 python -u train.py --env-name='HandManipulateBlockPosEp80Sim25-v0' --n-epochs=200 
 
-mpirun -np 8 python -u train.py --env-name='HandBlockFixedRotationPos-v0' --n-epochs=500 
+mpirun -np 16 python -u train.py --env-name='HandBlockFixedRotationPos25-v0' --n-epochs=500 
 
 
 ### Play Demo
