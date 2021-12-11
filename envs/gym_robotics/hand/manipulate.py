@@ -166,19 +166,19 @@ class ManipulateEnv(hand_env.HandEnv, utils.EzPickle):
                 parallel_quat = self.parallel_quats[self.np_random.randint(len(self.parallel_quats))]
                 offset_quat = rotations.quat_mul(z_quat, parallel_quat)
                 initial_quat = rotations.quat_mul(initial_quat, offset_quat)
-            elif self.target_rotation in ['xyz', 'ignore']:
+            elif self.target_rotation in ['xyz', 'ignore', 'fixed']:
                 angle = self.np_random.uniform(-np.pi, np.pi)
                 axis = self.np_random.uniform(-1., 1., size=3)
                 offset_quat = quat_from_angle_and_axis(angle, axis)
                 initial_quat = rotations.quat_mul(initial_quat, offset_quat)
-            elif self.target_rotation == 'fixed':
-                pass
+            # elif self.target_rotation == 'fixed':
+            #     pass
             else:
                 raise error.Error('Unknown target_rotation option "{}".'.format(self.target_rotation))
 
         # Randomize initial position.
         if self.randomize_initial_position:
-            if self.target_position != 'fixed':
+            if self.target_position == 'fixed':
                 # initial_pos += self.np_random.normal(size=3, scale=0.05) # in this way the first dim of initial pos varies from 1.004 to 1.014
                 # ---set initial_pos just as 'random' target pos:
                 # in this way we get similar results. however the target_goal could reach 0.8. becaucse func 'is_on_palm()' is used
@@ -187,6 +187,8 @@ class ManipulateEnv(hand_env.HandEnv, utils.EzPickle):
                 offset = self.np_random.uniform(self.target_position_range[:, 0], self.target_position_range[:, 1])
                 assert offset.shape == (3,)
                 initial_pos = self.sim.data.get_joint_qpos('object:joint')[:3] + offset
+            else:
+                initial_pos += self.np_random.normal(size=3, scale=0.005)
 
         initial_quat /= np.linalg.norm(initial_quat)
         initial_qpos = np.concatenate([initial_pos, initial_quat])
