@@ -30,7 +30,7 @@ class dqn_agent:
             os.mkdir(self.args.save_dir)
         # path to save the model
         current_time = datetime.now().strftime('%b%d_%H-%M-%S')
-        current_time = "{}_hier_{}".format(current_time, hier)
+        current_time = "{}_hier_{}_lr_{}_{}_NoDone".format(current_time, hier, args.lr, args.replay_strategy)
         self.model_path = os.path.join(self.args.save_dir, self.args.env_name + current_time)
         if not os.path.exists(self.model_path) and args.save:
             os.mkdir(self.model_path)
@@ -49,6 +49,10 @@ class dqn_agent:
 
         # random exploration schedule
         self.eps = LinearSchedule(20000, 0.1)
+
+        # resume Q network
+        if args.resume_path:
+            self.Q_network.load_state_dict(torch.load('saved_models/' + args.resume_path + '/q_model.pt')[0])
 
     def init_qnets(self):
         self.Q_network = Qnet(self.env_params).to(self.device)
@@ -233,7 +237,10 @@ class dqn_agent:
                 with torch.no_grad():
                     inputs = self._preproc_inputs(obs, g)
                     actions = policy(inputs)
+                # print("actions", actions)
+                # actions = np.array([1])
                 observation_new, _, _, info = self.env.step(actions.squeeze(0))
+
                 obs = observation_new['observation']
                 g = observation_new['desired_goal']
                 per_success_rate.append(info['is_success'])
@@ -241,6 +248,7 @@ class dqn_agent:
                     success = 1.0
             total_success_rate.append(per_success_rate)
             success_list.append(success)
+            # print("success:", info['is_success'])
         total_success_rate = np.array(total_success_rate)
         # only calculate the success of the final state
         global_success_rate = np.mean(total_success_rate[:, -1])

@@ -48,7 +48,12 @@ def launch(args):
     env_params = get_env_params(env, args.c)
     # create the ddpg agent to interact with the environment
     dqn_trainer = dqn_agent(args, env, env_params, True)
-    dqn_trainer.learn()
+    if args.resume_path:
+        # eval dqn
+        sr, in_sr = dqn_trainer._eval_agent()
+        print("sr, in_sr:", sr, in_sr)
+    else:
+        dqn_trainer.learn()
 
 if __name__ == '__main__':
     # # take the configuration for the HER

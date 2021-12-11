@@ -70,8 +70,13 @@ mpirun -np 8 python -u train.py --env-name='HandManipulateBlockPosEp50Sim40-v0' 
 
 ### Play Demo
 ```bash
-
+# eval low-level
 python demo.py --env-name=HandManipulateBlockFull-v0 --model_path="saved_models/HandManipulateBlockFull-v0_Dec01_17-08-38_hier_False"
+
+# eval high level
+python train_hier_dqn.py --env-name='HandManipulateBlockRotateXYZ-v0' --pos_path='Success_HandPos_flat' \
+--rot_path='Success_HandManipulateBlockRotateXYZ-v0_hier_False' --resume_path='HandManipulateBlockRotateXYZ-v0Dec05_17-35-54_hier_True' \
+--save 0
 
 ```
 ### Download the Pre-trained Model

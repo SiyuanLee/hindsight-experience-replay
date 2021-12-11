@@ -59,7 +59,7 @@ def get_args_dqn():
     parser.add_argument('--replay-k', type=int, default=4, help='ratio to be replace')
     parser.add_argument('--batch-size', type=int, default=256, help='the sample batch size')
     parser.add_argument('--gamma', type=float, default=0.98, help='the discount factor')
-    parser.add_argument('--lr', type=float, default=0.001, help='the learning rate of Q')
+    parser.add_argument('--lr', type=float, default=0.0003, help='the learning rate of Q')
     parser.add_argument('--n-test-rollouts', type=int, default=10, help='the number of tests')
     parser.add_argument('--demo-length', type=int, default=20, help='the demo length')
     parser.add_argument('--device', type=str, default='cpu', help='if use gpu do the acceleration')
@@ -70,6 +70,7 @@ def get_args_dqn():
     parser.add_argument("--model_path", type=str, default="", help='folder to load the model in demo.py')
     parser.add_argument("--pos_path", type=str, default="", help='path for position model')
     parser.add_argument("--rot_path", type=str, default="", help='path for rotation model')
+    parser.add_argument("--resume_path", type=str, default="", help='path for learned Q network')
 
     args = parser.parse_args()
 
