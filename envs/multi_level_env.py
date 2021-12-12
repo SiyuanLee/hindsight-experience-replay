@@ -89,13 +89,13 @@ class MultiLevelEnv(gym.Wrapper):
         # related to the initial object state distribution in the pretrain env?
         if hi_action == 0:
             # TODO: these two implementations have similar performance on random pi_h, maybe need better pi_l
-            # goal = np.concatenate((desired_goal[:3], achieved_goal[3:]))
-            goal = np.concatenate((desired_goal[:3], self.init_obj_state[3:]))
+            goal = np.concatenate((desired_goal[:3], achieved_goal[3:]))
+            # goal = np.concatenate((desired_goal[:3], self.init_obj_state[3:]))
             o_mean, o_std, g_mean, g_std = self.o_mean, self.o_std, self.g_mean, self.g_std
             actor_network = self.actor_network_pos
         elif hi_action == 1:
-            # goal = np.concatenate((achieved_goal[:3], desired_goal[3:]))
-            goal = np.concatenate((self.init_obj_state[:3], desired_goal[3:]))
+            goal = np.concatenate((achieved_goal[:3], desired_goal[3:]))
+            # goal = np.concatenate((self.init_obj_state[:3], desired_goal[3:]))
             o_mean, o_std, g_mean, g_std = self.o_mean1, self.o_std1, self.g_mean1, self.g_std1
             actor_network = self.actor_network_rot
         else:

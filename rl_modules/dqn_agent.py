@@ -30,7 +30,7 @@ class dqn_agent:
             os.mkdir(self.args.save_dir)
         # path to save the model
         current_time = datetime.now().strftime('%b%d_%H-%M-%S')
-        current_time = "{}_hier_{}_lr_{}_{}_NoDone".format(current_time, hier, args.lr, args.replay_strategy)
+        current_time = "_{}_hier_{}_lr_{}_{}".format(current_time, hier, args.lr, args.replay_strategy)
         self.model_path = os.path.join(self.args.save_dir, self.args.env_name + current_time)
         if not os.path.exists(self.model_path) and args.save:
             os.mkdir(self.model_path)
