@@ -51,7 +51,7 @@ def get_args_dqn():
     parser = argparse.ArgumentParser()
     # the environment setting
     parser.add_argument('--env-name', type=str, default='FetchReach-v1', help='the environment name')
-    parser.add_argument('--n-epochs', type=int, default=200, help='the number of epochs to train the agent')
+    parser.add_argument('--n-epochs', type=int, default=50000, help='the number of epochs to train the agent')
     parser.add_argument('--seed', type=int, default=123, help='random seed')
     parser.add_argument('--replay-strategy', type=str, default='future', help='the HER strategy')
     parser.add_argument('--save-dir', type=str, default='saved_models/', help='the path to save the models')
@@ -63,6 +63,7 @@ def get_args_dqn():
     parser.add_argument('--n-test-rollouts', type=int, default=10, help='the number of tests')
     parser.add_argument('--demo-length', type=int, default=20, help='the demo length')
     parser.add_argument('--device', type=str, default='cpu', help='if use gpu do the acceleration')
+    parser.add_argument('--cuda', action='store_true', help='if use gpu do the acceleration')
 
     # new params
     parser.add_argument("--c", type=int, default=10, help="low-level policy length")

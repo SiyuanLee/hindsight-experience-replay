@@ -40,15 +40,12 @@ class MultiLevelEnv(gym.Wrapper):
                       'action_space': env.action_space,
                       }
         # create the actor network
-        if args.device is not 'cpu':
-            cuda = True
-        else:
-            cuda = False
-        self.actor_network_pos = actor(env_params, cuda)
+        self.cuda = args.cuda
+        self.actor_network_pos = actor(env_params, self.cuda)
         self.actor_network_pos.load_state_dict(model)
-        self.actor_network_rot = actor(env_params, cuda)
+        self.actor_network_rot = actor(env_params, self.cuda)
         self.actor_network_rot.load_state_dict(model1)
-        if cuda:
+        if self.cuda:
             self.actor_network_pos.cuda()
             self.actor_network_rot.cuda()
         self.actor_network_pos.eval()
@@ -76,6 +73,8 @@ class MultiLevelEnv(gym.Wrapper):
         g_norm = np.clip((g_clip - g_mean) / (g_std), -5., 5.)
         inputs = np.concatenate([o_norm, g_norm])
         inputs = torch.tensor(inputs, dtype=torch.float32)
+        if self.cuda:
+            inputs = inputs.cuda()
         return inputs
 
     def step(self, hi_action, **kwargs):
@@ -111,7 +110,7 @@ class MultiLevelEnv(gym.Wrapper):
             inputs = self.process_inputs(cp_obs, goal, o_mean, o_std, g_mean, g_std)
             with torch.no_grad():
                 pi = actor_network(inputs)
-            action = pi.detach().numpy().squeeze()
+            action = pi.detach().cpu().numpy().squeeze()
 
             next_obs, reward, done, info = self.env.step(action, **kwargs)
 
