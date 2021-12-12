@@ -42,7 +42,7 @@ def launch(args):
     random.seed(args.seed)
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
-    if args.device is not 'cpu':
+    if args.device != 'cpu':
         torch.cuda.manual_seed(args.seed)
     # get the environment parameters
     env_params = get_env_params(env, args.c)
@@ -62,4 +62,7 @@ if __name__ == '__main__':
     # os.environ['IN_MPI'] = '1'
     # get the params
     args = get_args_dqn()
+    if args.cuda:
+        args.device = "cuda"
+        os.environ["CUDA_VISIBLE_DEVICES"] = '0,1,2,3,4'  # cuda id
     launch(args)

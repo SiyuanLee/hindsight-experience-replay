@@ -111,5 +111,3 @@ register(
                        'n_substeps': 25}, kwargs),
         max_episode_steps=80,
     )
-
-
